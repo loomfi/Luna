@@ -1,6 +1,7 @@
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 import * as fs from 'fs';
 import * as path from 'path';
+import chalk from 'chalk';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -18,12 +19,12 @@ for (const folder of commandFolders) {
         if ('data' in command && 'execute' in command) {
             client.commands.set(command.data.name, command);
         } else {
-            console.warn(`[SERVER] [W]: Command in file at ${filePath} is missing "data" or "execute".`)
+            console.warn(`${chalk.greenBright('[SERVER]')} [W]: Command in file at ${filePath} is missing "data" or "execute".`)
         }
     }
 }
 
-client.on(Events.InteractionCreate, async interaction => {
+client.on(Events.InteractionCreate, async (interaction: any) => {
     if (!interaction.isChatInputCommand()) return;
     const command = interaction.client.commands.get(interaction.commandName);
 
@@ -42,8 +43,8 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 })
 
-client.on('ready', (value) => {
-    console.log(`[SERVER] Logged in as ${value.user.displayName}!`)
+client.on('ready', (value: any) => {
+    console.log(`${chalk.greenBright('[SERVER]')} Logged in as ${value.user.displayName}!`)
 })
 
 client.login(process.env.BOT_TOKEN);

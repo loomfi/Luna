@@ -1,7 +1,9 @@
-{ "dependencies": { "discord.js": "^14.15.3" },
+{
+  "dependencies": { "chalk": "^5.3.0", "discord.js": "^14.15.3", "drizzle": "^1.4.0", "drizzle-kit": "^0.23.0", "drizzle-orm": "^0.32.0", "pg": "^8.12.0", "typescript": "^5.5.3" },
   "scripts": {
     "regenerate": "bun run command_servicing.js",
-    "bot": "bun run bot.js",
-    "cli": "bun run regenerate && bun run bot"
+    "bot": "bun run bot.ts",
+    "cli": "bun run regenerate && bun run bot",
+    "setup": "bun drizzle-kit generate && bun drizzle-kit migrate"
   }
 }
