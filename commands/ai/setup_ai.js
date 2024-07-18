@@ -15,7 +15,7 @@ module.exports = {
             })
             await ctx.reply("Enabled AI Features, go have fun with /ai.")
         } else {
-            if (serverSettings[0].aiFeatures == true) {
+            if (serverChecks[0].aiFeatures == true) {
                 await db.update(serverSettings).values({
                     'aiFeatures': false
                 }).where(eq(serverSettings.guild_id, ctx.guild.id))
