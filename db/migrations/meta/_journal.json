@@ -8,6 +8,13 @@
       "when": 1721167411245,
       "tag": "0000_cuddly_random",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1721270571648,
+      "tag": "0001_curly_silvermane",
+      "breakpoints": true
     }
   ]
 }

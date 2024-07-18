@@ -52,6 +52,7 @@ client.on(Events.InteractionCreate, async (interaction: any) => {
     try {
         await command.execute(interaction)
     } catch (error) {
+        console.log(error)
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({content: 'Some error had occured when this command was ran', ephemeral: true})
         } else {
