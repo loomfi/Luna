@@ -7,7 +7,7 @@ const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require('discor
 module.exports = {
     data: new SlashCommandBuilder().setName('server').setDescription('Grab server information.').setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(ctx) {
-        let announcementsTracking = await db.select().from(announcementChannel).where(eq(announcementChannel.guild_id, ctx.guild.id))
+        let announcementsTracking = await db.select().from(announcementChannel)
         let serverInfoEmbed = new EmbedBuilder().setColor('#c93622')
         .setTitle(`Server information for ${ctx.guild.name}`)
         .addFields(
