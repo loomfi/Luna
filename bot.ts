@@ -75,17 +75,17 @@ client.on('ready', async (value: any) => {
 })
 
 client.on('guildCreate', async (g: any) => {
-    // const channel = g.channels.cache.find((channel: any) => channel.type === 'GUILD_TEXT' && channel.permissionsFor(g.me).has("SEND_MESSAGES"))
-    console.log(g.channels.cache)
-    // let initialServerSettings = await db.select().from(serverSettings).where(eq(serverSettings.guild_id, g.id))
-    // if (initialServerSettings.length == 0) {
-    //     await db.insert(serverSettings).values({
-    //         'aiFeatures': false,
-    //         'guild_id': g.id
-    //     })
-    // }
-    let embed = new EmbedBuilder().setTitle("Thanks for inviting me! I am Luna.").setDescription("I have setup the default server permissions for this server. You may edit the server settings as you like through /settings")
-    // await channel.send({embed: embed})
+    let initialServerSettings = await db.select().from(serverSettings).where(eq(serverSettings.guild_id, g.id))
+    if (initialServerSettings.length == 0) {
+        await db.insert(serverSettings).values({
+            'aiFeatures': false,
+            'guild_id': g.id
+        })
+    }
+    let embed = new EmbedBuilder().setTitle("Thanks for inviting me! I am Luna.").setDescription("I have setup the default server settings for this server. You may edit the server settings as you like through /settings")
+    await (await client.users.fetch((await g.fetchOwner()).id).catch(() => null)).send({embeds: [embed]}).catch((e: any) => {
+        console.log(e)
+    })
 })
 
 client.login(process.env.BOT_TOKEN);
