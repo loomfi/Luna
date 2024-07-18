@@ -2,7 +2,10 @@ const { Client, Collection, Events, GatewayIntentBits } = require('discord.js')
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { ActivityType, Emoji, REST, Routes } from 'discord.js';
+import { ActivityType, EmbedBuilder, Emoji, REST, Routes } from 'discord.js';
+const {eq} = require('drizzle-orm')
+const {db} = require('./lib/db/db')
+const {serverSettings} = require('./lib/db/schema')
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -69,6 +72,20 @@ client.on('ready', async (value: any) => {
         status: 'idle',
         activities: [{name: "the moon. 🌙", type: ActivityType.Listening}]
     })
+})
+
+client.on('guildCreate', async (g: any) => {
+    // const channel = g.channels.cache.find((channel: any) => channel.type === 'GUILD_TEXT' && channel.permissionsFor(g.me).has("SEND_MESSAGES"))
+    console.log(g.channels.cache)
+    // let initialServerSettings = await db.select().from(serverSettings).where(eq(serverSettings.guild_id, g.id))
+    // if (initialServerSettings.length == 0) {
+    //     await db.insert(serverSettings).values({
+    //         'aiFeatures': false,
+    //         'guild_id': g.id
+    //     })
+    // }
+    let embed = new EmbedBuilder().setTitle("Thanks for inviting me! I am Luna.").setDescription("I have setup the default server permissions for this server. You may edit the server settings as you like through /settings")
+    // await channel.send({embed: embed})
 })
 
 client.login(process.env.BOT_TOKEN);
