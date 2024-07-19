@@ -15,7 +15,8 @@ module.exports = {
         let select_options = new StringSelectMenuBuilder().setCustomId('settings_select').setPlaceholder('⚙️ Choose an option to change')
             .addOptions(
                 new StringSelectMenuOptionBuilder().setLabel('🤖 AI Chat').setDescription("Be able to chat with an AI.").setValue("ai_select"),
-                new StringSelectMenuOptionBuilder().setLabel('📝 Education Verification').setDescription("Verify an individual being of a school with their education status through handlers.").setValue("education_verification_select"),
+                new StringSelectMenuOptionBuilder().setLabel('📝 Moderation Features')
+                .setDescription("Have moderation features (accessible determined by having specific permission)").setValue("moderation_select"),
             );
 
         const optionsActionRow = new ActionRowBuilder().addComponents(select_options);
@@ -42,18 +43,18 @@ module.exports = {
                         .setFooter({ text: (currentServerSettings[0].aiFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
 
                     await i.update({ embeds: [editEmbed], components: [optionsActionRow, buttonActionRow], content: '' });
-                } else if (selectedOption == 'education_verification_select') {
-                    selectedFeatureFlag = 'education_verification_select';
-                    enable_button.setDisabled(currentServerSettings[0].educationVerificationFeatures).setCustomId('enable_feature');
-                    disable_button.setDisabled(!currentServerSettings[0].educationVerificationFeatures).setCustomId('disable_feature');
-                    select_options.setPlaceholder('📝 Education Verification');
+                } else if (selectedOption == 'moderation_select') {
+                    selectedFeatureFlag = 'moderation_select';
+                    enable_button.setDisabled(currentServerSettings[0].moderationFeatures).setCustomId('enable_feature');
+                    disable_button.setDisabled(!currentServerSettings[0].moderationFeatures).setCustomId('disable_feature');
+                    select_options.setPlaceholder('📝 Moderation Features');
                     const optionsActionRow = new ActionRowBuilder().addComponents(select_options);
                     const buttonActionRow = new ActionRowBuilder().addComponents(disable_button, enable_button);
                     const editEmbed = new EmbedBuilder()
                         .setColor('Greyple')
-                        .setTitle("📝 Education Verification")
-                        .setDescription("Verify an individual being of a school with their education status through handlers.")
-                        .setFooter({ text: (currentServerSettings[0].educationVerificationFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
+                        .setTitle("📝 Moderation Features")
+                        .setDescription("Add additional features to your server by allowing for moderation to be possible for individuals depending on the permissions that they have")
+                        .setFooter({ text: (currentServerSettings[0].moderationFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
                     await i.update({ embeds: [editEmbed], components: [optionsActionRow, buttonActionRow], content: '' });
                 }
             } else if (i.isButton()) {
@@ -67,13 +68,13 @@ module.exports = {
                         currentServerSettings[0].aiFeatures = false;
                         await db.update(serverSettings).set({ aiFeatures: false }).where(eq(serverSettings.guild_id, ctx.guild.id));
                     }
-                } else if (selectedFeatureFlag == 'education_verification_select') {
+                } else if (selectedFeatureFlag == 'moderation_select') {
                     if (customId === 'enable_feature') {
-                        currentServerSettings[0].educationVerificationFeatures = true;
-                        await db.update(serverSettings).set({ educationVerificationFeatures: true }).where(eq(serverSettings.guild_id, ctx.guild.id));
+                        currentServerSettings[0].moderationFeatures = true;
+                        await db.update(serverSettings).set({ moderationFeatures: true }).where(eq(serverSettings.guild_id, ctx.guild.id));
                     } else if (customId === 'disable_feature') {
-                        currentServerSettings[0].educationVerificationFeatures = false;
-                        await db.update(serverSettings).set({ educationVerificationFeatures: false }).where(eq(serverSettings.guild_id, ctx.guild.id));
+                        currentServerSettings[0].moderationFeatures = false;
+                        await db.update(serverSettings).set({ moderationFeatures: false }).where(eq(serverSettings.guild_id, ctx.guild.id));
                     }
                 }
 
@@ -89,15 +90,14 @@ module.exports = {
                         .setFooter({ text: (currentServerSettings[0].aiFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
 
                     await i.update({ embeds: [editEmbed], components: [optionsActionRow, buttonActionRow], content: '' });
-                } else if (selectedFeatureFlag == 'education_verification_select') {
-                    enable_button.setDisabled(currentServerSettings[0].educationVerificationFeatures);
-                    disable_button.setDisabled(!currentServerSettings[0].educationVerificationFeatures);
+                } else if (selectedFeatureFlag == 'moderation_select') {
+                    enable_button.setDisabled(currentServerSettings[0].moderationFeatures);
+                    disable_button.setDisabled(!currentServerSettings[0].moderationFeatures);
                     const editEmbed = new EmbedBuilder()
                         .setColor('Greyple')
-                        .setTitle("📝 Education Verification")
-                        .setDescription("Verify an individual being of a school with their education status through handlers.")
-                        .setFooter({ text: (currentServerSettings[0].educationVerificationFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
-
+                        .setTitle("📝 Moderation Features")
+                        .setDescription("Add additional features to your server by allowing for moderation to be possible for individuals depending on the permissions that they have")
+                        .setFooter({ text: (currentServerSettings[0].moderationFeatures) ? "✅ This feature is currently enabled." : "❌ This feature is currently disabled." });
                     await i.update({ embeds: [editEmbed], components: [optionsActionRow, buttonActionRow], content: '' });
                 }
             }

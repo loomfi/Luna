@@ -36,6 +36,7 @@ module.exports = {
                 }
             }
         } catch (e) {
+            console.log(e)
             await ctx.editReply({content: "Apologies, but it seems that either the bot has either exhausted its queries, its an issue on Googles' side, or is a message 2000 words or longer that can't be sent. Please wait a bit before trying again.", ephemeral: true})
         }
     },

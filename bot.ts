@@ -79,7 +79,7 @@ client.on('guildCreate', async (g: any) => {
     if (initialServerSettings.length == 0) {
         await db.insert(serverSettings).values({
             'aiFeatures': false,
-            'educationVerificationFeatures': false,
+            'moderationFeatures': true,
             'guild_id': g.id
         })
     } else {
@@ -87,7 +87,7 @@ client.on('guildCreate', async (g: any) => {
         // recreate
         await db.insert(serverSettings).values({
             'aiFeatures': false,
-            'educationVerificationFeatures': false,
+            'moderationFeatures': true,
             'guild_id': g.id
         })
     }
