@@ -6,9 +6,11 @@ const {SlashCommandBuilder} = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder().setName('ai').setDescription('Ask AI anything!')
-    .addStringOption(option => { return option.setName('prompt').setDescription("What is your prompt?").setRequired(true)}),
+    .addStringOption(option => { return option.setName('prompt').setDescription("What is your prompt?").setRequired(true)})
+    .setDMPermission(false),
     async execute(ctx) {
         try {
+            await ctx.deferReply()
             let serverChecks = await db.select().from(serverSettings).where(eq(serverSettings.guild_id, ctx.guild.id))
             if (serverChecks.length == 0) {
                 await ctx.reply({content: "AI functionality isn't currently enabled. Please contact your administrator to be able to setup this functionality.", ephemeral: true})
@@ -28,13 +30,13 @@ module.exports = {
                     let prompt = ctx.options.getString("prompt")
                     let init_result = await model.generateContent(prompt);
                     let result = init_result.response.text();
-                    await ctx.reply({content: result})
+                    await ctx.editReply({content: result})
                 } else {
-                    await ctx.reply({content: "AI functionality isn't currently enabled. Please contact your administrator to be able to setup this functionality.", ephemeral: true})
+                    await ctx.editReply({content: "AI functionality isn't currently enabled. Please contact your administrator to be able to setup this functionality.", ephemeral: true})
                 }
             }
         } catch (e) {
-            await ctx.reply({content: "Apologies, but it seems that either the bot has exhausted its queries or its an issue on Googles' side. Please wait a bit before trying again.", ephemeral: true})
+            await ctx.editReply({content: "Apologies, but it seems that either the bot has either exhausted its queries, its an issue on Googles' side, or is a message 2000 words or longer that can't be sent. Please wait a bit before trying again.", ephemeral: true})
         }
     },
 }

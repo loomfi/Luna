@@ -79,6 +79,15 @@ client.on('guildCreate', async (g: any) => {
     if (initialServerSettings.length == 0) {
         await db.insert(serverSettings).values({
             'aiFeatures': false,
+            'educationVerificationFeatures': false,
+            'guild_id': g.id
+        })
+    } else {
+        await db.delete(serverSettings).where(eq(serverSettings.guild_id, g.id))
+        // recreate
+        await db.insert(serverSettings).values({
+            'aiFeatures': false,
+            'educationVerificationFeatures': false,
             'guild_id': g.id
         })
     }

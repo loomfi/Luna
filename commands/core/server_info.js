@@ -5,7 +5,8 @@ const {announcementChannel} = require('../../lib/db/schema')
 const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require('discord.js')
 
 module.exports = {
-    data: new SlashCommandBuilder().setName('server').setDescription('Grab server information.').setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    data: new SlashCommandBuilder().setName('server').setDescription('Grab server information.').setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+    .setDMPermission(false),
     async execute(ctx) {
         let serverInfoEmbed = new EmbedBuilder().setColor('#c93622')
         .setTitle(`Server information for ${ctx.guild.name}`)

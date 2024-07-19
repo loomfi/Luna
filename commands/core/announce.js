@@ -9,7 +9,8 @@ module.exports = {
     .addChannelOption(option => {return option.setName('channel').setDescription("Channel to set as the announcements channel").setRequired(true)})
     .addStringOption(option => { return option.setName('title').setDescription("Set the title of the announcement").setRequired(true)})
     .addStringOption(option => { return option.setName('message').setDescription("Message to announce").setRequired(true)})
-    .addRoleOption(option => { return option.setName('role').setDescription("Mention a role, if needed from everyone to a specific role").setRequired(false)}),
+    .addRoleOption(option => { return option.setName('role').setDescription("Mention a role, if needed from everyone to a specific role").setRequired(false)})
+    .setDMPermission(false),
     async execute(ctx) {
             try {
                 if (ctx.options.getRole('role') == null) {
